@@ -5,14 +5,14 @@ Supporting details, without interrupting your notes.
 Turn supplementary information into compact, title-free blocks in Obsidian. Keep your links, lists and code, with less space around them.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/images/context-block-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="docs/images/context-block-light.png">
-  <img src="docs/images/context-block-light.png" alt="Context Block in Obsidian: a compact explanation, formatted Markdown with YAML code, and the same sentence in a standard Note callout and a smaller context block." width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/zzunebye/obsidian-context-block/master/docs/images/context-block-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/zzunebye/obsidian-context-block/master/docs/images/context-block-light.png">
+  <img src="https://raw.githubusercontent.com/zzunebye/obsidian-context-block/master/docs/images/context-block-light.png" alt="Context Block in Obsidian: a compact explanation, formatted Markdown with YAML code, and the same sentence in a standard Note callout and a smaller context block." width="100%">
 </picture>
 
 <p align="center">
   <sub>Actual Obsidian rendering · Default settings · Light and dark themes</sub><br>
-  <a href="docs/images/context-block-light.png">Light preview</a> · <a href="docs/images/context-block-dark.png">Dark preview</a>
+  <a href="https://raw.githubusercontent.com/zzunebye/obsidian-context-block/master/docs/images/context-block-light.png">Light preview</a> · <a href="https://raw.githubusercontent.com/zzunebye/obsidian-context-block/master/docs/images/context-block-dark.png">Dark preview</a>
 </p>
 
 | Compact by default | Native Markdown | Your theme |
