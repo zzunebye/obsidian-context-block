@@ -5,6 +5,7 @@ import { globalIgnores, defineConfig } from 'eslint/config';
 export default defineConfig(
 	globalIgnores([
 		'node_modules',
+		'.qa',
 		'dist',
 		'esbuild.config.mjs',
 		'version-bump.mjs',
@@ -29,4 +30,9 @@ export default defineConfig(
 		},
 	},
 	...obsidianmd.configs.recommended,
+	{
+		files: ['tests/**/*.ts'],
+		languageOptions: { globals: globals.node },
+		rules: { 'obsidianmd/no-nodejs-modules': 'off' },
+	},
 );

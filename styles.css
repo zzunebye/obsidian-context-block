@@ -1,8 +1,44 @@
-/*
-
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
-*/
+.callout[data-callout="context"] {
+	--callout-padding: var(--context-padding, 10px);
+	--callout-content-padding: 0;
+	--callout-radius: 6px;
+	--callout-border-width: 0;
+	box-sizing: border-box;
+	padding: var(--context-padding, 10px);
+	margin-block: 1em;
+	border: 1px solid color-mix(in srgb, var(--text-normal) var(--context-border, 12%), transparent);
+	border-radius: var(--callout-radius);
+	background: color-mix(in srgb, var(--text-normal) var(--context-background, 4%), transparent);
+	color: var(--text-normal);
+	font-size: var(--context-font-size, 0.9em);
+	line-height: 1.5;
+	overflow-wrap: anywhere;
+	word-break: keep-all;
+	box-shadow: none;
+}
+.callout[data-callout="context"] > .callout-title { display: none; }
+.callout[data-callout="context"] > .callout-content {
+	display: block;
+	padding: 0;
+	margin: 0;
+	font-size: inherit;
+	color: inherit;
+	line-height: inherit;
+}
+.callout[data-callout="context"] > .callout-content > p { margin-block: 0.5em; }
+.callout[data-callout="context"] > .callout-content > :is(pre, ul, ol) { margin-block: 0.5em; }
+.callout[data-callout="context"] pre {
+	padding: 0.5em;
+	font-size: inherit;
+	line-height: inherit;
+}
+.callout[data-callout="context"] pre > code {
+	display: block;
+	font-size: inherit;
+	line-height: inherit;
+}
+.callout[data-callout="context"] > .callout-content > :first-child { margin-top: 0; }
+.callout[data-callout="context"] > .callout-content > :last-child { margin-bottom: 0; }
+.callout[data-callout="context"] .callout[data-callout="context"] { font-size: inherit; }
+.callout[data-callout="context"] pre,
+.callout[data-callout="context"] .table-wrapper { max-width: 100%; overflow-x: auto; }
