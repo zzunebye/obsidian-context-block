@@ -1,13 +1,32 @@
 # Context Block
 
-Compact supplementary information for Obsidian Markdown notes.
+Supporting details, without interrupting your notes.
+
+Turn supplementary information into compact, title-free blocks in Obsidian. Keep your links, lists and code, with less space around them.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/context-block-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/images/context-block-light.png">
+  <img src="docs/images/context-block-light.png" alt="Context Block in Obsidian: a compact explanation, formatted Markdown with YAML code, and the same sentence in a standard Note callout and a smaller context block." width="100%">
+</picture>
+
+<p align="center">
+  <sub>Actual Obsidian rendering · Default settings · Light and dark themes</sub><br>
+  <a href="docs/images/context-block-light.png">Light preview</a> · <a href="docs/images/context-block-dark.png">Dark preview</a>
+</p>
+
+| Compact by default | Native Markdown | Your theme |
+| --- | --- | --- |
+| Equal padding and text at 90% of the note size. | Links, lists and code in Reading view and Live Preview. | Colors follow Obsidian, with adjustable background and border strength. |
+
+## Write a context block
 
 ```markdown
 > [!context]
 > Linux Namespace와는 다른 수준의 개념임을 명시하자.
 ```
 
-Reading view and Live Preview render a title-free block with equal padding on every side. Text inherits the note font at 90% of its size. Links, emphasis, lists and inline code use Obsidian's native Markdown renderer.
+Use the existing callout syntax. The plugin handles the compact appearance; your note stays plain Markdown.
 
 ## Commands
 
