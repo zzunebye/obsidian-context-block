@@ -75,3 +75,9 @@ export function unwrapContext(lines: readonly string[], start: number, end: numb
 	return { edit: { from: header, to: last, text: before + content.join('\n') + after,
 		cursorLine: header + (before ? 1 : 0), cursorCh: 0 } };
 }
+
+export function toggleContext(lines: readonly string[], start: number, end: number): EditResult {
+	const unwrapped = unwrapContext(lines, start, end);
+	if ('edit' in unwrapped || quote.test(lines[start] ?? '')) return unwrapped;
+	return wrapContext(lines, start, end);
+}

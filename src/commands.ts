@@ -1,6 +1,6 @@
 import { Notice } from 'obsidian';
 import type { Editor, Plugin } from 'obsidian';
-import { unwrapContext, wrapContext } from './transforms';
+import { toggleContext, unwrapContext, wrapContext } from './transforms';
 import type { EditResult } from './transforms';
 
 function apply(editor: Editor, transform: (lines: readonly string[], start: number, end: number) => EditResult): void {
@@ -24,6 +24,8 @@ function apply(editor: Editor, transform: (lines: readonly string[], start: numb
 }
 
 export function registerContextCommands(plugin: Plugin): void {
+	plugin.addCommand({ id: 'toggle-context', name: 'Toggle wrapping',
+		editorCallback: editor => apply(editor, toggleContext) });
 	plugin.addCommand({ id: 'wrap-context', name: 'Wrap selection',
 		editorCallback: editor => apply(editor, wrapContext) });
 	plugin.addCommand({ id: 'unwrap-context', name: 'Unwrap current block',

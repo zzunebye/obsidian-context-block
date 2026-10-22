@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { wrapContext, unwrapContext } from '../src/transforms';
+import { toggleContext, wrapContext, unwrapContext } from '../src/transforms';
 import type { EditResult } from '../src/transforms';
 
 function apply(source: string, result: EditResult): string {
@@ -126,4 +126,67 @@ await test('ends a quoted fence when the quote ends', () => {
 	const result = apply(source, unwrapContext(source.split('\n'), 4, 4));
 	// Then
 	assert.equal(result, '> ```md\n> sample\n\nExplanation');
+});
+
+await test('wraps the whole paragraph when toggle runs on plain text', () => {
+	// Given
+	const source = 'Before\n\nFirst\nSecond\n\nAfter';
+	// When
+	const result = apply(source, toggleContext(source.split('\n'), 3, 3));
+	// Then
+	assert.equal(result, 'Before\n\n> [!context]\n> First\n> Second\n\nAfter');
+});
+
+await test('unwraps the whole block when toggle runs inside context', () => {
+	// Given
+	const source = '> [!context]\n> First\n>\n> Second';
+	// When
+	const result = apply(source, toggleContext(source.split('\n'), 3, 3));
+	// Then
+	assert.equal(result, 'First\n\nSecond');
+});
+
+await test('restores original Markdown when the wrapped block is toggled again', () => {
+	// Given
+	const source = '**Details**\n\n- One\n- Two';
+	const wrapped = apply(source, toggleContext(source.split('\n'), 0, 3));
+	// When
+	const result = apply(wrapped, toggleContext(wrapped.split('\n'), 1, 1));
+	// Then
+	assert.equal(result, source);
+});
+
+await test('unwraps from code inside a real context while preserving literal headers', () => {
+	// Given
+	const source = '> [!context]\n> ```md\n> [!context]\n> sample\n> ```';
+	// When
+	const result = apply(source, toggleContext(source.split('\n'), 3, 3));
+	// Then
+	assert.equal(result, '```md\n[!context]\nsample\n```');
+});
+
+for (const [name, source, start, end] of [
+	['leaves a context block', '> [!context]\n> Details\n\nOutside', 1, 3],
+	['enters a context block', 'Outside\n\n> [!context]\n> Details', 0, 3],
+	['spans two context blocks', '> [!context]\n> First\n\n> [!context]\n> Second', 1, 4],
+	['is inside a different callout', '> [!note]\n> Details', 1, 1],
+	['contains only a literal code sample', '```md\n> [!context]\n> Details\n```', 2, 2],
+] as const) {
+	await test(`rejects toggle when the selection ${name}`, () => {
+		// Given
+		const lines = source.split('\n');
+		// When
+		const result = toggleContext(lines, start, end);
+		// Then
+		assert.ok('reason' in result);
+	});
+}
+
+await test('inserts an empty context block when toggle runs on an empty paragraph', () => {
+	// Given
+	const source = '';
+	// When
+	const result = apply(source, toggleContext(source.split('\n'), 0, 0));
+	// Then
+	assert.equal(result, '> [!context]\n> ');
 });

@@ -18,6 +18,8 @@ Context callout hides its title and icon. Content stays visible. Nested context 
 ## 6. Editing
 Wrap complete paragraphs in one transaction, preserving content and blank lines. Empty selection wraps current paragraph. Unwrap removes exactly one outer context layer. Reject existing quotes, code fences and frontmatter when wrapping.
 
+Toggle wrapping uses the same transformations: unwrap when the cursor or selection is inside one context block; otherwise wrap plain paragraphs. Selections crossing a context boundary or spanning multiple blocks are rejected. Keep explicit Wrap and Unwrap commands; assign no default hotkeys.
+
 ## 7. Accessibility
 Inherit host fonts, theme colors and zoom. No dimmed text, fixed heights, or motion. Keyboard access through command palette and assignable shortcuts.
 
