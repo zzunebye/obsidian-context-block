@@ -69,6 +69,4 @@ Requires Obsidian 1.8.9 or newer.
 - `npm run lint`: lint.
 - `npm test`: document transformation regression tests.
 
-No network requests, telemetry or external services are used by the plugin. The implementation uses browser-compatible APIs; actual iOS/Android device testing has not been performed.
-
-Based on the official [Obsidian sample plugin](https://github.com/obsidianmd/obsidian-sample-plugin).
+No network requests, telemetry or external services are used by the plugin. The implementation uses browser-compatible APIs.
