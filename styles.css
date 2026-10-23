@@ -1,4 +1,4 @@
-.callout[data-callout="context"] {
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) {
 	--callout-padding: var(--context-padding, 10px);
 	--callout-content-padding: 0;
 	--callout-radius: 6px;
@@ -16,8 +16,8 @@
 	word-break: keep-all;
 	box-shadow: none;
 }
-.callout[data-callout="context"] > .callout-title { display: none; }
-.callout[data-callout="context"] > .callout-content {
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) > .callout-title { display: none; }
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) > .callout-content {
 	display: block;
 	padding: 0;
 	margin: 0;
@@ -25,20 +25,25 @@
 	color: inherit;
 	line-height: inherit;
 }
-.callout[data-callout="context"] > .callout-content > p { margin-block: 0.5em; }
-.callout[data-callout="context"] > .callout-content > :is(pre, ul, ol) { margin-block: 0.5em; }
-.callout[data-callout="context"] pre {
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) > .callout-content > p { margin-block: 0.5em; }
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) > .callout-content > :is(pre, ul, ol) { margin-block: 0.5em; }
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) pre {
 	padding: 0.5em;
 	font-size: inherit;
 	line-height: inherit;
 }
-.callout[data-callout="context"] pre > code {
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) pre > code {
 	display: block;
 	font-size: inherit;
 	line-height: inherit;
 }
-.callout[data-callout="context"] > .callout-content > :first-child { margin-top: 0; }
-.callout[data-callout="context"] > .callout-content > :last-child { margin-bottom: 0; }
-.callout[data-callout="context"] .callout[data-callout="context"] { font-size: inherit; }
-.callout[data-callout="context"] pre,
-.callout[data-callout="context"] .table-wrapper { max-width: 100%; overflow-x: auto; }
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) > .callout-content > :first-child { margin-top: 0; }
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) > .callout-content > :last-child { margin-bottom: 0; }
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) :is(.callout[data-callout="context"], .callout[data-callout="context-short"]) { font-size: inherit; }
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) pre,
+:is(.callout[data-callout="context"], .callout[data-callout="context-short"]) .table-wrapper { max-width: 100%; overflow-x: auto; }
+
+.callout[data-callout="context-short"] {
+	width: fit-content;
+	max-width: 100%;
+}

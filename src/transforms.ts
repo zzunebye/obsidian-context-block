@@ -9,7 +9,7 @@ export interface TextEdit {
 export type EditResult = { readonly edit: TextEdit } | { readonly reason: string };
 
 const quote = /^ {0,3}>/;
-const context = /^ {0,3}>\s?\[!context\]\s*$/i;
+const context = /^ {0,3}>\s?\[!context(?:-short)?\]\s*$/i;
 const callout = /^ {0,3}>\s?\[!/;
 
 function protectedLines(lines: readonly string[], includeQuotedCode = true): ReadonlySet<number> {
@@ -77,7 +77,7 @@ export function unwrapContext(lines: readonly string[], start: number, end: numb
 	const protectedSet = protectedLines(lines);
 	let header = start;
 	while (header > 0 && quote.test(lines[header] ?? '') && (!callout.test(lines[header] ?? '') || protectedSet.has(header))) header--;
-	if (protectedSet.has(header) || !context.test(lines[header] ?? '')) return { reason: 'Place the cursor inside a context block with a plain [!context] header.' };
+	if (protectedSet.has(header) || !context.test(lines[header] ?? '')) return { reason: 'Place the cursor inside a context block with a plain [!context] or [!context-short] header.' };
 	let last = header;
 	while (last + 1 < lines.length && quote.test(lines[last + 1] ?? '') && (!callout.test(lines[last + 1] ?? '') || protectedSet.has(last + 1))) last++;
 	if (end > last) return { reason: 'Select text inside a single context block.' };

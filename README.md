@@ -4,6 +4,8 @@ Supporting details, without interrupting your notes.
 
 Turn supplementary information into compact, title-free blocks in Obsidian. Keep your links, lists and code, with less space around them.
 
+Inspired by Craft.do’s compact presentation of supporting details, Context Block brings a similar feel to your Obsidian notes.
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/zzunebye/obsidian-context-block/master/docs/images/context-block-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/zzunebye/obsidian-context-block/master/docs/images/context-block-light.png">
@@ -26,7 +28,12 @@ Turn supplementary information into compact, title-free blocks in Obsidian. Keep
 > Linux Namespace와는 다른 수준의 개념임을 명시하자.
 ```
 
-Use the existing callout syntax. The plugin handles the compact appearance; your note stays plain Markdown.
+Use `[!context]` for a full-width block or `[!context-short]` for a block that fits its content. Both use the same compact appearance; your note stays plain Markdown.
+
+```markdown
+> [!context-short]
+> It looks like this
+```
 
 ## Commands
 
@@ -36,7 +43,7 @@ Use the existing callout syntax. The plugin handles the compact appearance; your
 
 All three commands use one editor transaction and support Undo/Redo. Assign shortcuts under **Settings → Hotkeys**. No default shortcuts are assigned.
 
-Quotes retain their original `>` markers inside the context block, including nested quotes, other callouts and quoted code. Unwrapping restores the original quote. Wrapping rejects existing context blocks, frontmatter and standalone code blocks. Use a plain `> [!context]` header for blocks you want to unwrap with the command. Source mode retains normal Markdown syntax.
+Quotes retain their original `>` markers inside the context block, including nested quotes, other callouts and quoted code. Unwrapping restores the original quote. Wrapping rejects existing context blocks, frontmatter and standalone code blocks. Use a plain `> [!context]` or `> [!context-short]` header for blocks you want to unwrap with the command. Source mode retains normal Markdown syntax.
 
 ## Appearance
 
