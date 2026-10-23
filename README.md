@@ -30,13 +30,13 @@ Use the existing callout syntax. The plugin handles the compact appearance; your
 
 ## Commands
 
-- **Context Block: Toggle wrapping** wraps plain paragraphs or unwraps the context block containing the cursor. Assign a single shortcut to switch between both actions. Selections crossing a block boundary are left unchanged.
-- **Context Block: Wrap selection** wraps the selected paragraphs. A partial paragraph selection expands to the full paragraph. With no selection, it wraps the current paragraph; on an empty line it inserts an empty block.
+- **Context Block: Toggle wrapping** wraps paragraphs or quotes, or unwraps the context block containing the cursor. Assign a single shortcut to switch between both actions. Selections crossing a context boundary are left unchanged.
+- **Context Block: Wrap selection** wraps the selected paragraphs or quotes. A partial selection expands to the full paragraph or quoted block. With no selection, it wraps the current paragraph or quote; on an empty line it inserts an empty block.
 - **Context Block: Unwrap current block** unwraps the block containing the cursor. The selection must stay inside one block. Nested quotes remain intact.
 
 All three commands use one editor transaction and support Undo/Redo. Assign shortcuts under **Settings → Hotkeys**. No default shortcuts are assigned.
 
-Wrapping rejects existing blockquotes, frontmatter, fenced code and indented code. Use a plain `> [!context]` header for blocks you want to unwrap with the command. Source mode retains normal Markdown syntax.
+Quotes retain their original `>` markers inside the context block, including nested quotes, other callouts and quoted code. Unwrapping restores the original quote. Wrapping rejects existing context blocks, frontmatter and standalone code blocks. Use a plain `> [!context]` header for blocks you want to unwrap with the command. Source mode retains normal Markdown syntax.
 
 ## Appearance
 

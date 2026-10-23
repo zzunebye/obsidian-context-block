@@ -16,9 +16,9 @@ Note width, content-driven height, paragraph/list/code gap 0.5em, surrounding ga
 Context callout hides its title and icon. Content stays visible. Nested context never compounds text shrinking. Settings use native controls and tooltips. No animation.
 
 ## 6. Editing
-Wrap complete paragraphs in one transaction, preserving content and blank lines. Empty selection wraps current paragraph. Unwrap removes exactly one outer context layer. Reject existing quotes, code fences and frontmatter when wrapping.
+Wrap complete paragraphs or explicitly quoted blocks in one transaction, preserving content and blank lines. A selection inside a quote expands to its contiguous quoted lines. Preserve existing quote markers as a nested quote, including other callouts and quoted code. Empty selection wraps the current paragraph or quote. Unwrap removes exactly one outer context layer. Reject existing context blocks, standalone code fences and frontmatter when wrapping.
 
-Toggle wrapping uses the same transformations: unwrap when the cursor or selection is inside one context block; otherwise wrap plain paragraphs. Selections crossing a context boundary or spanning multiple blocks are rejected. Keep explicit Wrap and Unwrap commands; assign no default hotkeys.
+Toggle wrapping uses the same transformations: unwrap when the cursor or selection is inside one context block; otherwise wrap paragraphs or quotes. Selections crossing a context boundary or spanning multiple context blocks are rejected. Keep explicit Wrap and Unwrap commands; assign no default hotkeys.
 
 ## 7. Accessibility
 Inherit host fonts, theme colors and zoom. No dimmed text, fixed heights, or motion. Keyboard access through command palette and assignable shortcuts.

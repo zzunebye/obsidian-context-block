@@ -48,7 +48,6 @@ await test('inserts a typing position when the current paragraph is empty', () =
 });
 
 for (const [name, source, line] of [
-	['an existing quote', '> quote', 0],
 	['an existing callout', '> [!context]\n> text', 1],
 	['fenced code', '```md\nhello\n```', 1],
 	['tilde fenced code', '~~~~\nhello\n~~~~', 1],
@@ -169,7 +168,6 @@ for (const [name, source, start, end] of [
 	['leaves a context block', '> [!context]\n> Details\n\nOutside', 1, 3],
 	['enters a context block', 'Outside\n\n> [!context]\n> Details', 0, 3],
 	['spans two context blocks', '> [!context]\n> First\n\n> [!context]\n> Second', 1, 4],
-	['is inside a different callout', '> [!note]\n> Details', 1, 1],
 	['contains only a literal code sample', '```md\n> [!context]\n> Details\n```', 2, 2],
 ] as const) {
 	await test(`rejects toggle when the selection ${name}`, () => {
@@ -189,4 +187,78 @@ await test('inserts an empty context block when toggle runs on an empty paragrap
 	const result = apply(source, toggleContext(source.split('\n'), 0, 0));
 	// Then
 	assert.equal(result, '> [!context]\n> ');
+});
+
+await test('wraps the complete quote when only a middle quoted line is selected', () => {
+	// Given
+	const source = 'Before\n\n> First\n>\n> Second\n\nAfter';
+	// When
+	const result = apply(source, wrapContext(source.split('\n'), 4, 4));
+	// Then
+	assert.equal(result, 'Before\n\n> [!context]\n> > First\n> >\n> > Second\n\nAfter');
+});
+
+await test('wraps a quote without including the preceding unselected paragraph', () => {
+	// Given
+	const source = 'Before\n> Quoted text';
+	// When
+	const result = apply(source, wrapContext(source.split('\n'), 1, 1));
+	// Then
+	assert.equal(result, 'Before\n> [!context]\n> > Quoted text');
+});
+
+await test('toggles a nested quote into context and restores its original markers', () => {
+	// Given
+	const source = '> **First**\n>\n> > Nested quote\n>\n> Last';
+	const wrapped = apply(source, toggleContext(source.split('\n'), 2, 2));
+	// When
+	const result = apply(wrapped, toggleContext(wrapped.split('\n'), 3, 3));
+	// Then
+	assert.equal(result, source);
+});
+
+await test('wraps a different callout as a nested callout', () => {
+	// Given
+	const source = '> [!note]\n> Details';
+	// When
+	const result = apply(source, toggleContext(source.split('\n'), 1, 1));
+	// Then
+	assert.equal(result, '> [!context]\n> > [!note]\n> > Details');
+});
+
+await test('restores quoted code and its literal context header after toggling twice', () => {
+	// Given
+	const source = '> [!note]\n> ```md\n> [!context]\n> sample\n> ```';
+	const wrapped = apply(source, toggleContext(source.split('\n'), 3, 3));
+	// When
+	const result = apply(wrapped, toggleContext(wrapped.split('\n'), 4, 4));
+	// Then
+	assert.equal(result, source);
+});
+
+await test('wraps selected paragraphs and quotes together while preserving separation', () => {
+	// Given
+	const source = 'Explanation\n\n> Quoted text\n> More text';
+	// When
+	const result = apply(source, wrapContext(source.split('\n'), 0, 2));
+	// Then
+	assert.equal(result, '> [!context]\n> Explanation\n>\n> > Quoted text\n> > More text');
+});
+
+await test('rejects a quote-looking line that belongs to a standalone code fence', () => {
+	// Given
+	const source = '```md\n> Quoted text\n```';
+	// When
+	const result = wrapContext(source.split('\n'), 1, 1);
+	// Then
+	assert.ok('reason' in result);
+});
+
+await test('rejects explicit wrapping from inside an existing context block', () => {
+	// Given
+	const source = '> [!context]\n> > Quoted text';
+	// When
+	const result = wrapContext(source.split('\n'), 1, 1);
+	// Then
+	assert.ok('reason' in result);
 });

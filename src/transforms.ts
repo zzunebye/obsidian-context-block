@@ -12,7 +12,7 @@ const quote = /^ {0,3}>/;
 const context = /^ {0,3}>\s?\[!context\]\s*$/i;
 const callout = /^ {0,3}>\s?\[!/;
 
-function protectedLines(lines: readonly string[]): ReadonlySet<number> {
+function protectedLines(lines: readonly string[], includeQuotedCode = true): ReadonlySet<number> {
 	const result = new Set<number>();
 	let fence = '';
 	let fenceLength = 0;
@@ -34,10 +34,10 @@ function protectedLines(lines: readonly string[]): ReadonlySet<number> {
 		if (fence && depth < fenceDepth) fence = '';
 		const marker = /^ {0,3}(`{3,}|~{3,})(.*)$/.exec(content);
 		if (fence) {
-			result.add(i);
+			if (includeQuotedCode || fenceDepth === 0) result.add(i);
 			if (depth === fenceDepth && marker?.[1]?.[0] === fence && marker[1].length >= fenceLength && !marker[2]?.trim()) fence = '';
 		} else if (marker?.[1]) {
-			result.add(i);
+			if (includeQuotedCode || depth === 0) result.add(i);
 			fence = marker[1][0] ?? '';
 			fenceLength = marker[1].length;
 			fenceDepth = depth;
@@ -47,12 +47,24 @@ function protectedLines(lines: readonly string[]): ReadonlySet<number> {
 }
 
 export function wrapContext(lines: readonly string[], start: number, end: number): EditResult {
-	while (start > 0 && lines[start]?.trim() && lines[start - 1]?.trim()) start--;
-	while (end < lines.length - 1 && lines[end]?.trim() && lines[end + 1]?.trim()) end++;
+	if (quote.test(lines[start] ?? '')) {
+		while (start > 0 && quote.test(lines[start - 1] ?? '')) start--;
+	} else {
+		while (start > 0 && lines[start]?.trim() && lines[start - 1]?.trim() && !quote.test(lines[start - 1] ?? '')) start--;
+	}
+	if (quote.test(lines[end] ?? '')) {
+		while (end < lines.length - 1 && quote.test(lines[end + 1] ?? '')) end++;
+	} else {
+		while (end < lines.length - 1 && lines[end]?.trim() && lines[end + 1]?.trim() && !quote.test(lines[end + 1] ?? '')) end++;
+	}
 	const protectedSet = protectedLines(lines);
+	const blockedSet = protectedLines(lines, false);
 	for (let i = start; i <= end; i++) {
-		if (protectedSet.has(i) || quote.test(lines[i] ?? '')) {
-			return { reason: 'Select plain paragraphs outside quotes, code blocks, and frontmatter.' };
+		if (blockedSet.has(i)) {
+			return { reason: 'Select paragraphs or quotes outside standalone code blocks and frontmatter.' };
+		}
+		if (context.test(lines[i] ?? '') && !protectedSet.has(i)) {
+			return { reason: 'Select text outside existing context blocks, or unwrap a single context block.' };
 		}
 	}
 	const content = lines.slice(start, end + 1).map(line => line ? `> ${line}` : '>');
@@ -78,6 +90,6 @@ export function unwrapContext(lines: readonly string[], start: number, end: numb
 
 export function toggleContext(lines: readonly string[], start: number, end: number): EditResult {
 	const unwrapped = unwrapContext(lines, start, end);
-	if ('edit' in unwrapped || quote.test(lines[start] ?? '')) return unwrapped;
+	if ('edit' in unwrapped) return unwrapped;
 	return wrapContext(lines, start, end);
 }
